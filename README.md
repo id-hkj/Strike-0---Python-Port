@@ -5,7 +5,6 @@ Steps for this are simple - make sure your python indtallation included pip
                             If so, in the terminal, type "pip install -U pygame --user"
                             Then you should be good to go!
 
-IMPORTANT NOTE: IF YOU WANT TO OPEN IT, PUT THE FOLDER TITLED 'Strike 0' IN THE C:\Program Files FOLDER. IF IT ISN'T THERE, THE PROGRAM WON'T WORK!
-That's all that really needs to be said as of now. There are 2 things I'll do shortly after writing this:
-  1. Use Pyinstaller to create a .exe file for it (On creation, instruction will be below)
-  2. Create an installer for it.
+IMPORTANT NOTE: IF YOU WANT TO OPEN IT, PUT THE FOLDER TITLED "Strike 0" IN THE "C:\Program Files (x86)" FOLDER. IF IT ISN'T THERE, THE PROGRAM WON'T WORK!
+
+RUNNING THE PROGRAM:
