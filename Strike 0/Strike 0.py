@@ -3,7 +3,7 @@
 import pygame
 pygame.init()
 
-pygame.display.set_icon(pygame.image.load(r"C:\Program Files\Strike 0\Sprites\favicon.png"))
+pygame.display.set_icon(pygame.image.load(r"C:\Program Files (x86)\Strike 0\Sprites\favicon.png"))
 win = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 pygame.display.set_caption("Strike 0")
 
@@ -21,12 +21,12 @@ print(ScreenX)
 print(ScreenY)
 
 #IMAGE LOADS/ANIMATION VARS
-bg_UNSCALED = pygame.image.load(r"C:\Program Files\Strike 0\Sprites\Bg.png").convert ()
-#Shoot_Animation_Left_UNSCALED = [pygame.image.load(r"C:\Program Files\Strike 0\Sprites\Hero\ReadyPos_Left.png"), pygame.image.load(r"C:\Program Files\Strike 0\Sprites\Hero\ShootingLift1_Left.png"), pygame.image.load(r"C:\Program Files\Strike 0\Sprites\Hero\ShootingLift2_Left.png"), pygame.image.load(r"C:\Program Files\Strike 0\Sprites\Hero\Lifted_Left.png")]
-#Shoot_Animation_Right_UNSCALED = [pygame.image.load(r"C:\Program Files\Strike 0\Sprites\Hero\ReadyPos_Right.png"), pygame.image.load(r"C:\Program Files\Strike 0\Sprites\Hero\ShootingLift1_Right.png"), pygame.image.load(r"C:\Program Files\Strike 0\Sprites\Hero\ShootingLift2_Right.png"), pygame.image.load(r"C:\Program Files\Strike 0\Sprites\Hero\Lifted_Right.png")]
-#Walking_Left_UNSCALED = pygame.image.load(r"C:\Program Files\Strike 0\Sprites\Hero\ReadyPos_Left.png")
-#Walking_Right_UNSCALED = pygame.image.load(r"C:\Program Files\Strike 0\Sprites\Hero\ReadyPos_Right.png")
-Blocks_Set_1_UNSCALED = pygame.image.load(r"C:\Program Files\Strike 0\Sprites\Blocks\Map_NoScrollY.png").convert_alpha()
+bg_UNSCALED = pygame.image.load(r"C:\Program Files (x86)\Strike 0\Sprites\Bg.png").convert ()
+#Shoot_Animation_Left_UNSCALED = [pygame.image.load(r"C:\Program Files (x86)\Strike 0\Sprites\Hero\ReadyPos_Left.png"), pygame.image.load(r"C:\Program Files\Strike 0\Sprites\Hero\ShootingLift1_Left.png"), pygame.image.load(r"C:\Program Files\Strike 0\Sprites\Hero\ShootingLift2_Left.png"), pygame.image.load(r"C:\Program Files\Strike 0\Sprites\Hero\Lifted_Left.png")]
+#Shoot_Animation_Right_UNSCALED = [pygame.image.load(r"C:\Program Files (x86)\Strike 0\Sprites\Hero\ReadyPos_Right.png"), pygame.image.load(r"C:\Program Files\Strike 0\Sprites\Hero\ShootingLift1_Right.png"), pygame.image.load(r"C:\Program Files\Strike 0\Sprites\Hero\ShootingLift2_Right.png"), pygame.image.load(r"C:\Program Files\Strike 0\Sprites\Hero\Lifted_Right.png")]
+#Walking_Left_UNSCALED = pygame.image.load(r"C:\Program Files (x86)\Strike 0\Sprites\Hero\ReadyPos_Left.png")
+#Walking_Right_UNSCALED = pygame.image.load(r"C:\Program Files (x86)\Strike 0\Sprites\Hero\ReadyPos_Right.png")
+Blocks_Set_1_UNSCALED = pygame.image.load(r"C:\Program Files (x86)\Strike 0\Sprites\Blocks\Map_NoScrollY.png").convert_alpha()
 
 #IMAGE SCALINGS
 Blocks_Set_1 = pygame.transform.scale(Blocks_Set_1_UNSCALED, (int(ScreenX-((ScreenX//2.663)-ScreenX)), int(ScreenY-((ScreenY//0.648)-ScreenY))))
