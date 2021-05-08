@@ -29,7 +29,8 @@ bg_UNSCALED = pygame.image.load(r"C:\Program Files (x86)\Strike 0\Sprites\Bg.png
 Blocks_Set_1_UNSCALED = pygame.image.load(r"C:\Program Files (x86)\Strike 0\Sprites\Blocks\Map_NoScrollY.png").convert_alpha()
 
 #IMAGE SCALINGS
-Blocks_Set_1 = pygame.transform.scale(Blocks_Set_1_UNSCALED, (int(ScreenX-((ScreenX//2.663)-ScreenX)), int(ScreenY-((ScreenY//0.648)-ScreenY))))
+Blocks_Set_1 = pygame.transform.scale(Blocks_Set_1_UNSCALED, (int(2.664*ScreenX), int(ScreenY * 0.648)))
+
 bg = pygame.transform.scale(bg_UNSCALED, (ScreenX, ScreenY))
 
 Left = False
@@ -37,12 +38,14 @@ Right = True
 ShootCount = 0
 clock = pygame.time.Clock()
 
+print(int(ScreenY * 0.5556))
+
 #FUNCTIONS
 def Drawing():
     #Blocks
     win.blit(bg, (0, 0))
-    win.blit(Blocks_Set_1, (scrollX - 30, scrollY + 100))
-
+    win.blit(Blocks_Set_1, (scrollX - 700, scrollY + int(ScreenY * 0.361)))
+    #win.blit(Blocks_Set_1, (scrollX - 700, scrollY + 390))
     pygame.display.update()
     
 
@@ -60,9 +63,9 @@ while run:
     if keys[pygame.K_ESCAPE]:
         run = False
     if keys[pygame.K_LEFT]:
-        scrollX -= Scroll_Speed
-    if keys[pygame.K_RIGHT]:
         scrollX += Scroll_Speed
+    if keys[pygame.K_RIGHT]:
+        scrollX -= Scroll_Speed
     if keys[pygame.K_UP]:
         scrollY -= Scroll_Speed
     if keys[pygame.K_SPACE]:
