@@ -5,11 +5,8 @@ Steps for this are simple - make sure your python indtallation included pip
                             If so, in the terminal, type "pip install -U pygame --user"
                             Then you should be good to go!
 
-IMPORTANT NOTE: IF YOU WANT TO OPEN IT, PUT THE FOLDER TITLED "Strike 0" IN THE "C:\Program Files (x86)" FOLDER. IF IT ISN'T THERE, THE PROGRAM WON'T WORK!
-
 RUNNING THE PROGRAM:
-  If you want to install it, Download 'Strike-0-Installer.exe' and run it. I haven't figured out how to automate making a desktop/start menu shortcut, but this should do for now.
-  To run it go to the following path: "C:\Program Files (x86)\Strike 0\Strike 0.exe". I used NSIS to create the installer.
-  INSTALLING IT IN A DIFFERENT LOCATION WILL NOT WORK.
+  You can either download the exacutable with the sprites, or simply run the installer. I reccomend opening up the installer as admin at the begining, otherwise it doesn't do anything for a while after begginng installation.
   
   One thing to note when using the installer is that IT ONLY INSTALLS THE SPRITES AND APPLICATION - NOT THE SOURCE CODE.
+  In the past, you hadn't been able to run this without it being in the correct location - now this is fixed!
