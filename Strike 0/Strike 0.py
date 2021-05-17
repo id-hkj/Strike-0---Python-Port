@@ -115,8 +115,9 @@ def Gameplay():
     if KEYS[pygame.K_RIGHT] or KEYS[pygame.K_d]:
         scrollX -= Scroll_Speed
         Hero.Right = True
-    if KEYS[pygame.K_UP]  or KEYS[pygame.K_w] and Hero.UpCount == 100 and Hero.UpAble == True:
-        Hero.UpCount = 25
+    if KEYS[pygame.K_UP] or KEYS[pygame.K_w]:
+        if Hero.UpCount == 100 and Hero.UpAble == True:
+            Hero.UpCount = 25
     
     if Hero.UpCount <= 25 and Hero.UpCount > 0:
         Hero.y -= 10
