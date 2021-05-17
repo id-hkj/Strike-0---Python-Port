@@ -1,3 +1,5 @@
+The installer/exacutable file of the project will only be updated when there is a new version released of this port. You can access the past versions at https://github.com/id-hkj/Strike-0---Python-Port/releases  The python file may be updated any time. Generally, I'll make the new releases on Sundays, as that's when I have the most time.
+
 THIS PORT IS IN EARLY DEVELOPMENT. IF YOU WANT A MORE PLAYABLE VERSION OF THE GAME, GO TO scratch.mit.edu/users/id-hkj, AND FIND THE PROJECT TITLED 'STRIKE 0'
 
 For this game, I am using the Pygame module, so if you would like to play it, you'll need to install pyame.
