@@ -2,6 +2,8 @@
 
 import pygame
 import os
+
+from pygame.constants import WINDOWHIDDEN
 pygame.init()
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
@@ -18,7 +20,6 @@ Unlocked = False
 scrollX = 0
 scrollY = 0
 Scroll_Speed = 10
-Shooting = False
 run = True
 
 print(SCREENX)
@@ -27,7 +28,7 @@ print(SCREENY)
 
 #IMAGE LOADS/ANIMATION VARS
 bg_Gameplay_UNSCALED = pygame.image.load(os.path.join('Sprites', 'Bg.png')).convert()
-Hero_Left_UNSCALED = [pygame.image.load(os.path.join('Sprites', 'Hero', 'ReadyPos_Left.png')).convert_alpha(), pygame.image.load(os.path.join('Sprites', 'Hero', 'ShootingLift1_Left.png')).convert_alpha, pygame.image.load(os.path.join('Sprites', 'Hero', 'ShootingLift2_Left.png')).convert_alpha, pygame.image.load(os.path.join('Sprites', 'Hero', 'Lifted_Left.png')).convert_alpha()]
+Hero_Left_UNSCALED = [pygame.image.load(os.path.join('Sprites', 'Hero', 'ReadyPos_Left.png')).convert_alpha(), pygame.image.load(os.path.join('Sprites', 'Hero', 'ShootingLift1_Left.png')).convert_alpha(), pygame.image.load(os.path.join('Sprites', 'Hero', 'ShootingLift2_Left.png')).convert_alpha(), pygame.image.load(os.path.join('Sprites', 'Hero', 'Lifted_Left.png')).convert_alpha()]
 Hero_Right_UNSCALED = [pygame.image.load(os.path.join('Sprites', 'Hero', 'ReadyPos_Right.png')).convert_alpha(), pygame.image.load(os.path.join('Sprites', 'Hero', 'ShootingLift1_Right.png')).convert_alpha(), pygame.image.load(os.path.join('Sprites', 'Hero', 'ShootingLift2_Right.png')).convert_alpha(), pygame.image.load(os.path.join('Sprites', 'Hero', 'Lifted_Right.png')).convert_alpha()]
 Blocks_Set_1_UNSCALED = pygame.image.load(os.path.join('Sprites', 'Blocks', 'Map_NoScrollY.png')).convert_alpha()
 
@@ -47,18 +48,46 @@ class Player(object):
         self.ShootCount = 0
         self.Shooting = False
         self.UpCount = 100
-    def Drawing(self, win):
+        self.UpAble = True
+
+    def Drawing(self, win, pos):
         self.win = win
-        #Blocks
-        self.win.blit(Blocks_Set_1, (scrollX - int(BLOCK_SET_1_WIDTH * 0.137), scrollY + int(SCREENY * 0.361)))
-        #Hero
+        self.pos = pos
         if (Hero.Right == True):
-            self.win.blit(Hero_Right_UNSCALED[0], (Hero.x, Hero.y))
+            self.win.blit(Hero_Right_UNSCALED[self.pos], (self.x, self.y))
         if (Hero.Right == False):
-            self.win.blit(Hero_Left_UNSCALED[0], (Hero.x, Hero.y))
+            self.win.blit(Hero_Left_UNSCALED[self.pos], (self.x, self.y))
+
+class Blocks(object):
+    def __init__(self, IMAGE):
+        self.IMAGE = IMAGE
+    
+    def Drawing(self, win, X, Y):
+        self.win = win
+        self.X = X
+        self.Y = Y
+
+        self.win.blit(self.IMAGE, (self.X, self.Y))
+
+class Button(object):
+    def __init__(self, x, y, width, height, img):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.img = img
+
+    def Click(self, event):
+        self.event = event
+        MouseX, MouseY = pygame.mouse.get_pos()
+
+        if pygame.mouse.get_pressed()[0] and MouseX >= self.x and MouseX <= (self.width + self.x) and MouseY >= self.y and MouseY <= (self.height + self.y):
+            pygame.time.delay(50)
+            self.event
 
 #SPRITES
 Hero = Player(int(SCREENX*0.28038), 0)
+Blocks_1 = Blocks(Blocks_Set_1)
 
 #FUNCTIONS
 def Gameplay():
@@ -68,38 +97,62 @@ def Gameplay():
     global Hero
     global scrollX
     global scrollY
-
+    pos = 0
     #Ok, It wasn't that many.
 
     #BOUNDARIES
     if Hero.y <= 200 and Hero.UpCount == 100:
         Hero.y += 10
+        Hero.UpAble = False
+    else:
+        Hero.UpAble = True
 
     #KEY PRESSED EVENTS
-    if KEYS[pygame.K_LEFT]:
+
+    if KEYS[pygame.K_LEFT] or KEYS[pygame.K_a]:
         scrollX += Scroll_Speed
         Hero.Right = False
-    if KEYS[pygame.K_RIGHT]:
+    if KEYS[pygame.K_RIGHT] or KEYS[pygame.K_d]:
         scrollX -= Scroll_Speed
         Hero.Right = True
-    if KEYS[pygame.K_UP] and Hero.UpCount == 100:
+    if KEYS[pygame.K_UP]  or KEYS[pygame.K_w] and Hero.UpCount == 100 and Hero.UpAble == True:
         Hero.UpCount = 25
     
-    if Hero.UpCount <= 25 and Hero.UpCount > -25:
-        if Hero.UpCount <= 0:
-            neg = -1
-        else:
-            neg = 1
-        Hero.y -= (10 * neg)
+    if Hero.UpCount <= 25 and Hero.UpCount > 0:
+        Hero.y -= 10
         Hero.UpCount -= 1
     else:
         Hero.UpCount = 100
     
     if KEYS[pygame.K_SPACE] and Hero.Shooting == False:
         Hero.Shooting = True
-
+        Hero.ShootCount = 23
+    
+    if Hero.ShootCount > 0 and Hero.Shooting == True:
+        if Hero.ShootCount > 21:
+            pos = 1
+        elif Hero.ShootCount > 19:
+            pos = 2
+        elif Hero.ShootCount > 3:
+            pos = 3
+        elif Hero.ShootCount > 1:
+            pos = 2
+        elif Hero.ShootCount > 0:
+            pos = 1
+        else:
+            print('ERROR')
+        Hero.ShootCount -= 1
+    else:
+        Hero.Shooting = False
+        Hero.ShootCount = 25
+        Hero.pos = 0
+    
+    #DRAWING
     win.blit(bg_Gameplay, (0, 0))
-    Hero.Drawing(win)
+
+    Blocks_1.Drawing(win, scrollX - int(BLOCK_SET_1_WIDTH * 0.137), scrollY + int(SCREENY * 0.361))
+    Hero.Drawing(win, pos)
+    
     pygame.display.update()
 
 #MAIN GAME LOOP
