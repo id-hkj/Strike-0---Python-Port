@@ -15,7 +15,7 @@ pygame.display.set_caption("Strike 0")
 SCREENX, SCREENY = win.get_size()
 BLOCK_SET_1_WIDTH, BLOCK_SET_1_HEIGHT = int(2.664*SCREENX), int(SCREENY * 0.648)
 
-Backdrop = 1
+Backdrop = 0
 Unlocked = False
 scrollX = 0
 scrollY = 0
@@ -70,24 +70,28 @@ class Blocks(object):
         self.win.blit(self.IMAGE, (self.X, self.Y))
 
 class Button(object):
-    def __init__(self, x, y, width, height, img):
+    def __init__(self, x, y, width, height, img, win):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.img = img
-
-    def Click(self, event):
-        self.event = event
+        self.EventAble = False
+        self.win = win
+    
+    def Detect_Event(self):
         MouseX, MouseY = pygame.mouse.get_pos()
+
+        self.win.blit(pygame.transform.scale(self.img, (self.width, self.height)), (self.x, self.y))
 
         if pygame.mouse.get_pressed()[0] and MouseX >= self.x and MouseX <= (self.width + self.x) and MouseY >= self.y and MouseY <= (self.height + self.y):
             pygame.time.delay(50)
-            self.event
+            self.EventAble = True
 
 #SPRITES
 Hero = Player(int(SCREENX*0.28038), 0)
 Blocks_1 = Blocks(Blocks_Set_1)
+Start = Button(950, 570, 170, 66, pygame.image.load(os.path.join('Sprites', 'Buttons', 'StartButton.png')).convert(), win)
 
 #FUNCTIONS
 def Gameplay():
@@ -156,6 +160,15 @@ def Gameplay():
     
     pygame.display.update()
 
+def TitleScreen():
+    win.fill((160,32,240))
+    Start.Detect_Event()
+    pygame.display.update()
+    global Backdrop
+    if Start.EventAble == True:
+        pygame.time.delay(200)
+        Backdrop = 1
+
 #MAIN GAME LOOP
 while run:
     clock.tick(27)
@@ -170,6 +183,8 @@ while run:
 
     if Backdrop == 1:
         Gameplay()
+    elif Backdrop == 0:
+        TitleScreen()
     else:
         print('Error 002: BadValue[Scene_NumberState-Invalid]')
 
