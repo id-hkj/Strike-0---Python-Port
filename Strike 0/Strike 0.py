@@ -1,5 +1,5 @@
 # ©id-hkj 2021
-#1366, 768
+
 
 import pygame
 import os
@@ -28,7 +28,9 @@ print(SCREENY)
 
 
 #IMAGE LOADS/ANIMATION VARS
-bg_Gameplay_UNSCALED = pygame.image.load(os.path.join('Sprites', 'Bg.png')).convert()
+bg_Gameplay_UNSCALED = pygame.image.load(os.path.join('Sprites', 'Backdrops', 'Gameplay.png')).convert()
+bg_StartScreen_UNSCALED = pygame.image.load(os.path.join('Sprites', 'Backdrops', 'START_SCREEN.png')).convert()
+
 Hero_Left_UNSCALED = [pygame.image.load(os.path.join('Sprites', 'Hero', 'ReadyPos_Left.png')).convert_alpha(), pygame.image.load(os.path.join('Sprites', 'Hero', 'ShootingLift1_Left.png')).convert_alpha(), pygame.image.load(os.path.join('Sprites', 'Hero', 'ShootingLift2_Left.png')).convert_alpha(), pygame.image.load(os.path.join('Sprites', 'Hero', 'Lifted_Left.png')).convert_alpha()]
 Hero_Right_UNSCALED = [pygame.image.load(os.path.join('Sprites', 'Hero', 'ReadyPos_Right.png')).convert_alpha(), pygame.image.load(os.path.join('Sprites', 'Hero', 'ShootingLift1_Right.png')).convert_alpha(), pygame.image.load(os.path.join('Sprites', 'Hero', 'ShootingLift2_Right.png')).convert_alpha(), pygame.image.load(os.path.join('Sprites', 'Hero', 'Lifted_Right.png')).convert_alpha()]
 Blocks_Set_1_UNSCALED = pygame.image.load(os.path.join('Sprites', 'Blocks', 'Map_NoScrollY.png')).convert_alpha()
@@ -36,7 +38,17 @@ Blocks_Set_1_UNSCALED = pygame.image.load(os.path.join('Sprites', 'Blocks', 'Map
 #IMAGE SCALINGS
 Blocks_Set_1 = pygame.transform.scale(Blocks_Set_1_UNSCALED, (BLOCK_SET_1_WIDTH, BLOCK_SET_1_HEIGHT))
 bg_Gameplay = pygame.transform.scale(bg_Gameplay_UNSCALED, (SCREENX, SCREENY))
+bg_StartScreen = pygame.transform.scale(bg_StartScreen_UNSCALED, (SCREENX, SCREENY))
+Hero_Left = []
+Hero_Right = []
 
+for i in range(1000):
+    if i < 4:
+        #0.191
+        Hero_Left.append(pygame.transform.scale(Hero_Left_UNSCALED[i], (int(SCREENX*0.191), int(SCREENY*0.566))))
+        Hero_Right.append(pygame.transform.scale(Hero_Right_UNSCALED[i], (int(SCREENX*0.191), int(SCREENY*0.566))))
+    else:
+        break
 
 clock = pygame.time.Clock()
 
@@ -55,9 +67,9 @@ class Player(object):
         self.win = win
         self.pos = pos
         if (Hero.Right == True):
-            self.win.blit(Hero_Right_UNSCALED[self.pos], (self.x, self.y))
+            self.win.blit(Hero_Right[self.pos], (self.x, self.y))
         if (Hero.Right == False):
-            self.win.blit(Hero_Left_UNSCALED[self.pos], (self.x, self.y))
+            self.win.blit(Hero_Left[self.pos], (self.x, self.y))
 
 class Blocks(object):
     def __init__(self, IMAGE):
@@ -71,19 +83,16 @@ class Blocks(object):
         self.win.blit(self.IMAGE, (self.X, self.Y))
 
 class Button(object):
-    def __init__(self, x, y, width, height, img, win):
+    def __init__(self, x, y, width, height, win):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.img = img
         self.EventAble = False
         self.win = win
     
     def Detect_Event(self):
         MouseX, MouseY = pygame.mouse.get_pos()
-
-        self.win.blit(pygame.transform.scale(self.img, (self.width, self.height)), (self.x, self.y))
 
         if pygame.mouse.get_pressed()[0] and MouseX >= self.x and MouseX <= (self.width + self.x) and MouseY >= self.y and MouseY <= (self.height + self.y):
             pygame.time.delay(50)
@@ -92,7 +101,7 @@ class Button(object):
 #SPRITES
 Hero = Player(int(SCREENX*0.28038), 0)
 Blocks_1 = Blocks(Blocks_Set_1)
-Start = Button(950, 570, 170, 66, pygame.image.load(os.path.join('Sprites', 'Buttons', 'StartButton.png')).convert(), win)
+Start = Button(int(SCREENX*0.038), int(SCREENY*0.758), int(SCREENX*0.178), int(SCREENY*0.096), win)
 
 #FUNCTIONS
 def Gameplay():
@@ -106,7 +115,7 @@ def Gameplay():
     #Ok, It wasn't that many.
 
     #BOUNDARIES
-    if Hero.y <= 200 and Hero.UpCount == 100:
+    if Hero.y <= int(SCREENY*0.26) and Hero.UpCount == 100:
         Hero.y += 10
         Hero.UpAble = False
     else:
@@ -162,7 +171,7 @@ def Gameplay():
     pygame.display.update()
 
 def TitleScreen():
-    win.fill((160,32,240))
+    win.blit(bg_StartScreen, (0, 0))
     Start.Detect_Event()
     pygame.display.update()
     global Backdrop
