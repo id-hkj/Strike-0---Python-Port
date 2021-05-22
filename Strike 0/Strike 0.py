@@ -1,4 +1,5 @@
 # ©id-hkj 2021
+#1366, 768
 
 import pygame
 import os
