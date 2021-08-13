@@ -19,16 +19,21 @@ print(SCREENY)
 
 #IMAGE LOADS/ANIMATION VARS
 bg_Gameplay_UNSCALED = pygame.image.load(os.path.join('Sprites', 'Backdrops', 'Gameplay.png')).convert()
-bg_StartScreen_UNSCALED = pygame.image.load(os.path.join('Sprites', 'Backdrops', 'START_SCREEN.png')).convert()
+bg_Title_UNSCALED = pygame.image.load(os.path.join('Sprites', 'Backdrops', 'Title.png')).convert()
+bg_Starting_UNSCALED = pygame.image.load(os.path.join('Sprites', 'Backdrops', 'Starting.png')).convert()
 
 Hero_Left_UNSCALED = [pygame.image.load(os.path.join('Sprites', 'Hero', 'ReadyPos_Left.png')).convert_alpha(), pygame.image.load(os.path.join('Sprites', 'Hero', 'ShootingLift1_Left.png')).convert_alpha(), pygame.image.load(os.path.join('Sprites', 'Hero', 'ShootingLift2_Left.png')).convert_alpha(), pygame.image.load(os.path.join('Sprites', 'Hero', 'Lifted_Left.png')).convert_alpha()]
 Hero_Right_UNSCALED = [pygame.image.load(os.path.join('Sprites', 'Hero', 'ReadyPos_Right.png')).convert_alpha(), pygame.image.load(os.path.join('Sprites', 'Hero', 'ShootingLift1_Right.png')).convert_alpha(), pygame.image.load(os.path.join('Sprites', 'Hero', 'ShootingLift2_Right.png')).convert_alpha(), pygame.image.load(os.path.join('Sprites', 'Hero', 'Lifted_Right.png')).convert_alpha()]
 Blocks_Set_1_UNSCALED = pygame.image.load(os.path.join('Sprites', 'Blocks', 'Map_NoScrollY.png')).convert_alpha()
+Bullet_UNSCALED = pygame.image.load(os.path.join('Sprites', 'Game_Other', 'Bullet.png')).convert_alpha()
 
 #IMAGE SCALINGS
-Blocks_Set_1 = pygame.transform.scale(Blocks_Set_1_UNSCALED, (round(5115*DivisorX), round(700*DivisorY)))
 bg_Gameplay = pygame.transform.scale(bg_Gameplay_UNSCALED, (round(1920*DivisorX), round(1080*DivisorY)))
-bg_StartScreen = pygame.transform.scale(bg_StartScreen_UNSCALED, (round(1920*DivisorX), round(1080*DivisorY)))
+bg_Title = pygame.transform.scale(bg_Title_UNSCALED, (round(1920*DivisorX), round(1080*DivisorY)))
+bg_Starting = pygame.transform.scale(bg_Starting_UNSCALED, (round(1920*DivisorX), round(1080*DivisorY)))
+
+Blocks_Set_1 = pygame.transform.scale(Blocks_Set_1_UNSCALED, (round(5115*DivisorX), round(700*DivisorY)))
+Bullet = pygame.transform.scale(Bullet_UNSCALED, (round(21*DivisorX), round(31*DivisorY)))
 Hero_Left = []
 Hero_Right = []
 
@@ -40,8 +45,10 @@ for i in range(1000):
     else:
         break
 
+del(bg_Gameplay_UNSCALED, bg_Title_UNSCALED, Hero_Left_UNSCALED, Hero_Right_UNSCALED, Blocks_Set_1_UNSCALED, Bullet_UNSCALED, bg_Starting_UNSCALED)
+
 #VARIABLES
-Backdrop = 0
+Backdrop = 'Title'
 Unlocked = False
 scrollX = 0
 scrollY = 0
@@ -153,6 +160,7 @@ Start = Button(round(74*DivisorX), round(819*DivisorY), round(342*DivisorX), rou
 UpdateLog = Button(round(71*DivisorX), round(931*DivisorY), round(747*DivisorX), round(103*DivisorY), win)
 Credits = Button(round(1361*DivisorX), round(818*DivisorY), round(469*DivisorX), round(105*DivisorY), win)
 HowToPlay = Button(round(1113*DivisorX), round(933*DivisorY), round(722*DivisorX), round(101*DivisorY), win)
+StartGame = Button(round(1582*DivisorX), round(938*DivisorY), round(312*DivisorX), round(113*DivisorY), win)
 
 #FUNCTIONS
 def Gameplay():
@@ -237,18 +245,15 @@ def Gameplay():
     #DRAWING
     Rendering(bg_Gameplay, 'N', 0, 0, win)
     Rendering(Blocks_Set_1, 'N', scrollX - 700, scrollY + 390, win)
-    if Hero.Right == False:
+    if Hero.Right == True:
         Rendering(Hero_Right, pos, Hero.x, Hero.y, win)
     else:
         Rendering(Hero_Left, pos, Hero.x + 60, Hero.y, win)
-    #win.blit(bg_Gameplay, (0, 0))
-    #Blocks_1.Drawing(win, scrollX - 700, scrollY + 390)
-    #Hero.Drawing(win, pos)
     
     pygame.display.update()
 
 def TitleScreen():
-    win.blit(bg_StartScreen, (0, 0))
+    Rendering(bg_Title, 'N', 0, 0, win)
     
     Start.Detect_Event()
     UpdateLog.Detect_Event()
@@ -259,7 +264,22 @@ def TitleScreen():
     global Backdrop
     if Start.EventAble == True:
         pygame.time.delay(200)
-        Backdrop = 1
+        Backdrop = 'PreStart'
+    if UpdateLog.EventAble == True:
+        print()
+    if Credits.EventAble == True:
+        print()
+    if HowToPlay.EventAble == True:
+        print()
+
+def Starting():
+    Rendering(bg_Starting, 'N', 0, 0, win)
+    StartGame.Detect_Event()
+    pygame.display.update()
+
+    global Backdrop
+    if StartGame.EventAble == True:
+        Backdrop = 'Game'
 
 #MAIN GAME LOOP
 while run:
@@ -273,9 +293,11 @@ while run:
     if KEYS[pygame.K_ESCAPE]:
         run = False
 
-    if Backdrop == 1:
+    if Backdrop == 'Game':
         Gameplay()
-    elif Backdrop == 0:
+    elif Backdrop == 'PreStart':
+        Starting()
+    elif Backdrop == 'Title':
         TitleScreen()
     else:
         print('Error 002: BadValue[Scene_NumberState-Invalid]')
